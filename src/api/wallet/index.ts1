@@ -1,0 +1,46 @@
+import request from '/@/utils/request';
+
+
+export function useWalletApi() {
+	return {
+		getWallet: (params) => {
+			return request({
+				url: 'api/wallet/current',
+				method: 'get',
+				params
+			});
+		}
+	}
+};
+export function useWalletFlowApi() {
+	return {
+		list: (params) => {
+			return request({
+				url: 'api/walletflow/list',
+				method: 'get',
+				params
+			});
+		},
+		add: (params) => {
+			return request({
+				url: 'api/walletflow/save',
+				method: 'post',
+				data: params
+			});
+		},
+		update: (params) => {
+			return request({
+				url: 'api/walletflow/update',
+				method: 'post',
+				data: params
+			});
+		},
+		delete: (params) => {
+			return request({
+				url: 'api/walletflow/delete',
+				method: 'post',
+				data: params
+			});
+		}
+	};
+}
