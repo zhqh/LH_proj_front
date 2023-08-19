@@ -27,7 +27,7 @@ export const lang: langType = {
     market: '市场行情',
     instId: '币种',
     price: '价格',
-    dayfl: '24小时涨跌幅',
+    dayfl: '24H涨跌',
   },
   list: {
     details: '列表详情',
@@ -35,6 +35,7 @@ export const lang: langType = {
     stparam: '策略参数',
     sthold: '当前持仓',
     sthishold: '历史持仓',
+    kline: '交易K线图',
     hisst: '历史策略',
     floatPL: '浮动盈亏',
     hisstratety: '历史策略',
@@ -66,7 +67,7 @@ export const lang: langType = {
     config_api_first: '请先配置API Key',
     get_api_error: '获取用户API KEY失败',
     refer_to_hisstrategy: '关闭成功,请到历史策略查看',
-    force_close: '平掉当前策略持仓单'
+    force_close: '平掉当前策略持仓单',
   },
   member: {
     setting: '设置',
@@ -119,7 +120,7 @@ export const lang: langType = {
     start_success: '启动成功',
     empty_instId: '币种为空',
     get_price_error: '获取市场价格失败',
-    get_lever_error: '获取杠杆失败'
+    get_lever_error: '获取杠杆失败',
   },
   login: {
     login: '登录',
@@ -128,7 +129,7 @@ export const lang: langType = {
     empty_name: '用户名或手机号为空',
     empty_password: '密码为空',
     forget_password: '忘记密码',
-    register: '免费注册'
+    register: '免费注册',
   },
   forget: {
     input_email: '请输入邮箱地址',
@@ -136,7 +137,6 @@ export const lang: langType = {
     input_password: '请设置新密码',
     empty_newpassword: '新密码为空',
     reset_password: '充值密码',
-
   },
   register: {
     register: '注册',
@@ -149,7 +149,7 @@ export const lang: langType = {
     input_invitedCode: '请输入邀请码',
     empty_invitedCode: '邀请码为空',
     registered_to_login: '注册成功, 正在登陆',
-    reset_to_login: '重置成功，正在登陆'
+    reset_to_login: '重置成功，正在登陆',
   },
 
   tradeflow: {
@@ -161,7 +161,7 @@ export const lang: langType = {
     profitAmount: '收益',
     open_time: '开仓时间',
     close_time: '平仓时间',
-    get_instId_error: '获取用户的策略币种失败'
+    get_instId_error: '获取用户的策略币种失败',
   },
   shareInvite: {
     share: '点击复制邀请他人使用',
@@ -247,18 +247,24 @@ export const lang: langType = {
     position_greatethen_availBal: '投入金额或保证金超过账户余额',
     empty_addition_count: '网格数量为空',
     empty_order_plan: '计划订单为空',
-    empty_opencount_additiongap_profitrate: '开仓数量，加仓间隔，涨幅为空'
+    empty_opencount_additiongap_profitrate: '开仓数量，加仓间隔，涨幅为空',
+    first_order_money: '首单金额',
+    empty_first_order_money: '首单金额不能为空',
+    fluctuation: '入场波幅',
+    quantity_serial: '投入序列',
   },
   strategy_name: {
     SimpleGrid: '简单网格',
     CustomGrid: '自定义网格',
-    LongShortHedgingGrid: '多空对冲'
+    LongShortHedgingGrid: '多空对冲',
+    TrendTrade: '趋势交易',
+    ReboundTrade: '超涨超跌反弹',
   },
   tradeType: {
     SPOT: '币币',
     MARGIN: '币币杠杆',
     SWAPUSDT: '永续合约(USDT本位)',
-    SWAPCOIN: '永续合约(币本位)'
+    SWAPCOIN: '永续合约(币本位)',
   },
   type: {
     steady: '稳健型',
@@ -356,6 +362,6 @@ export const lang: langType = {
     withdraw_time: '提现时间',
     withdraw_amount: '提现数量',
     consume_time: '消费时间',
-    consume_amount: '消费数量'
-  }
-}
+    consume_amount: '消费数量',
+  },
+};

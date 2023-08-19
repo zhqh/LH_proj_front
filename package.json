@@ -22,6 +22,7 @@
     "clipboard": "^2.0.11",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
+    "echarts": "^5.4.3",
     "http2-wrapper": "^2.2.0",
     "mitt": "^3.0.0",
     "moment": "^2.29.4",

@@ -42,6 +42,13 @@ export function useExchangeApi() {
         params,
       });
     },
+    historyCandles: (params) => {
+      return request({
+        url: 'api/trade/exchange/market/history-candles',
+        method: 'get',
+        params,
+      });
+    },
     lever: (params) => {
       return request({
         url: 'api/trade/exchange/lever',
@@ -69,11 +76,24 @@ export function useExchangeApi() {
         method: 'get',
         params,
       });
-    }
+    },
   };
 }
 export function useStrategyApi() {
   return {
+    downloadHistoryCandles: (params) => {
+      return request({
+        url: 'api/trade/strategy/download-history-candles',
+        method: 'get',
+        params,
+      });
+    },
+    getStrategyById: (id) => {
+      return request({
+        url: `api/trade/strategy/get/${id}`,
+        method: 'get',
+      });
+    },
     checkBacktestData: (params) => {
       return request({
         url: 'api/trade/strategy/check-backtest-data',
@@ -95,10 +115,11 @@ export function useStrategyApi() {
         params,
       });
     },
-    getTotalFloatFL: () => {
+    getTotalFloatFL: (params) => {
       return request({
         url: 'api/trade/strategy/floatFL/total',
-        method: 'get'
+        method: 'get',
+        params,
       });
     },
     add: (params) => {
@@ -221,10 +242,10 @@ export function useReportApi() {
       return request({
         url: 'api/trade/report/instIds',
         method: 'get',
-        params
+        params,
       });
-    }
-  }
+    },
+  };
 }
 export function useStrategyParamApi() {
   return {
@@ -347,7 +368,6 @@ export function useOpsApi() {
         method: 'get',
         params,
       });
-    }
-  }
+    },
+  };
 }
-

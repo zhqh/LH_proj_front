@@ -85,6 +85,14 @@ export const routes = [
         },
       },
       {
+        path: 'kline/:id',
+        component: () => import('/@/views/list/kline.vue'),
+        meta: {
+          title: 'list.kline',
+          keepAlive: true,
+        },
+      },
+      {
         path: 'hisst',
         component: () => import('/@/views/list/hisst.vue'),
         meta: {

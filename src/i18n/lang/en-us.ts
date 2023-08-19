@@ -27,7 +27,7 @@ export const lang: langType = {
     market: '市场行情e',
     instId: '币种e',
     price: '价格e',
-    dayfl: '24小时涨跌幅e',
+    dayfl: '24H涨跌e',
   },
   list: {
     details: '列表详情e',
@@ -35,6 +35,7 @@ export const lang: langType = {
     stparam: '策略参数e',
     sthold: '当前持仓e',
     sthishold: '历史持仓e',
+    kline: '交易K线图e',
     hisst: '历史策略e',
     floatPL: '浮动盈亏e',
     hisstratety: '历史策略e',
@@ -66,7 +67,7 @@ export const lang: langType = {
     config_api_first: '请先配置API Keye',
     get_api_error: '获取用户API KEY失败e',
     refer_to_hisstrategy: '关闭成功,请到历史策略查看e',
-    force_close: '平掉当前策略持仓单e'
+    force_close: '平掉当前策略持仓单e',
   },
   member: {
     setting: '设置e',
@@ -119,7 +120,7 @@ export const lang: langType = {
     start_success: '启动成功e',
     empty_instId: '币种为空e',
     get_price_error: '获取市场价格失败e',
-    get_lever_error: '获取杠杆失败e'
+    get_lever_error: '获取杠杆失败e',
   },
   login: {
     login: '登录e',
@@ -128,7 +129,7 @@ export const lang: langType = {
     empty_name: '用户名或手机号为空e',
     empty_password: '密码为空e',
     forget_password: '忘记密码e',
-    register: '免费注册e'
+    register: '免费注册e',
   },
   forget: {
     input_email: '请输入邮箱地址e',
@@ -136,7 +137,6 @@ export const lang: langType = {
     input_password: '请设置新密码e',
     empty_newpassword: '新密码为空e',
     reset_password: '充值密码e',
-
   },
   register: {
     register: '注册e',
@@ -149,7 +149,7 @@ export const lang: langType = {
     input_invitedCode: '请输入邀请码e',
     empty_invitedCode: '邀请码为空e',
     registered_to_login: '注册成功, 正在登陆e',
-    reset_to_login: '重置成功，正在登陆e'
+    reset_to_login: '重置成功，正在登陆e',
   },
 
   tradeflow: {
@@ -161,7 +161,7 @@ export const lang: langType = {
     profitAmount: '收益e',
     open_time: '开仓时间e',
     close_time: '平仓时间e',
-    get_instId_error: '获取用户的策略币种失败e'
+    get_instId_error: '获取用户的策略币种失败e',
   },
   shareInvite: {
     share: '点击复制邀请他人使用e',
@@ -247,18 +247,24 @@ export const lang: langType = {
     position_greatethen_availBal: '投入金额或保证金超过账户余额e',
     empty_addition_count: '网格数量为空e',
     empty_order_plan: '计划订单为空e',
-    empty_opencount_additiongap_profitrate: '开仓数量，加仓间隔，涨幅为空e'
+    empty_opencount_additiongap_profitrate: '开仓数量，加仓间隔，涨幅为空e',
+    first_order_money: '首单金额e',
+    empty_first_order_money: '首单金额不能为空e',
+    fluctuation: '入场波幅e',
+    quantity_serial: '投入序列e',
   },
   strategy_name: {
     SimpleGrid: '简单网格e',
     CustomGrid: '自定义网格e',
-    LongShortHedgingGrid: '多空对冲e'
+    LongShortHedgingGrid: '多空对冲e',
+    TrendTrade: '趋势交易e',
+    ReboundTrade: '超涨超跌反弹e',
   },
   tradeType: {
     SPOT: '币币e',
     MARGIN: '币币杠杆e',
     SWAPUSDT: '永续合约(USDT本位)e',
-    SWAPCOIN: '永续合约(币本位)e'
+    SWAPCOIN: '永续合约(币本位)e',
   },
   type: {
     steady: '稳健型e',
@@ -356,6 +362,6 @@ export const lang: langType = {
     withdraw_time: '提现时间e',
     withdraw_amount: '提现数量e',
     consume_time: '消费时间e',
-    consume_amount: '消费数量e'
-  }
-}
+    consume_amount: '消费数量e',
+  },
+};

@@ -2,7 +2,7 @@ export const tradeTypeMap = {
   SPOT: 'tradeType.SPOT',
   MARGIN: 'tradeType.MARGIN',
   SWAPUSDT: 'tradeType.SWAPUSDT',
-  SWAPCOIN: 'tradeType.SWAPCOIN'
+  SWAPCOIN: 'tradeType.SWAPCOIN',
 };
 export const typeMap = {
   steady: 'type.steady',
@@ -11,7 +11,9 @@ export const typeMap = {
 export const nameDescMap = {
   SimpleGrid: 'strategy_name.SimpleGrid',
   CustomGrid: 'strategy_name.CustomGrid',
-  LongShortHedgingGrid: 'strategy_name.LongShortHedgingGrid'
+  LongShortHedgingGrid: 'strategy_name.LongShortHedgingGrid',
+  TrendTrade: 'strategy_name.TrendTrade',
+  ReboundTrade: 'strategy_name.ReboundTrade',
 };
 export const directionNameMap = {
   opposite: 'direction.opposite',
@@ -40,7 +42,7 @@ export const targetProfitConditionNameMap = {
 };
 export const lossConditionNameMap = {
   none: 'lossCondition.none',
-  rate: 'lossCondition.rate'
+  rate: 'lossCondition.rate',
   // break5DaysAvg: '突破5日均线',
 };
 export function getTradeTypeNameDesc(type: string, globalProperties: object) {
@@ -126,7 +128,7 @@ function getCoin(instId) {
 export function map2List(map, globalProperties) {
   const list = [];
   for (const key in map) {
-    list.push({ text: (map[key]), value: key });
+    list.push({ text: globalProperties.$t(map[key]), value: key });
   }
   return list;
 }

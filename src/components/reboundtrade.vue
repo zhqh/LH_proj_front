@@ -15,18 +15,6 @@
     </nut-row>
     <nut-row>
       <nut-col :span="5">
-        <div class="flex-content">{{ $t('create_strategy.profitMode') }}</div>
-      </nut-col>
-      <nut-col :span="7">
-        <nut-input :placeholder="profitModeDesc" readonly>
-          <template #right>
-            <ArrowDown @click="profitModeShow = true" />
-          </template>
-        </nut-input>
-      </nut-col>
-    </nut-row>
-    <nut-row>
-      <nut-col :span="5">
         <div class="flex-content">{{ $t('create_strategy.priceArea') }}</div>
       </nut-col>
       <nut-col :span="7">
@@ -43,17 +31,41 @@
     </nut-row>
     <nut-row>
       <nut-col :span="5">
-        <div class="flex-content">{{ $t('create_strategy.position') }}</div>
+        <div class="flex-content">{{ $t('create_strategy.fluctuation') }}</div>
       </nut-col>
-      <nut-col :span="7">
-        <nut-input placeholder="" v-model="customStrategyParam.param.position" type="number" />
+      <nut-col :span="7" class="fluctuation">
+        <div><nut-input placeholder="" v-model="customStrategyParam.param.fluctuation" type="number" /></div>
+        <span>%</span>
       </nut-col>
       <nut-col :span="5">
-        <div class="flex-content">{{ $t('create_strategy.addtion_count') }}</div>
+        <div class="flex-content">{{ $t('create_strategy.addition_gap') }}</div>
+      </nut-col>
+      <nut-col :span="7" class="addition_gap">
+        <div><nut-input placeholder="" v-model="customStrategyParam.param.addition_gap" type="number" /></div>
+        <span>%</span>
+      </nut-col>
+    </nut-row>
+    <nut-row>
+      <nut-col :span="5">
+        <div class="flex-content">{{ $t('create_strategy.quantity_serial') }}</div>
+      </nut-col>
+      <nut-col :span="19">
+        <nut-input placeholder="" v-model="customStrategyParam.param.quantity_serial" />
+      </nut-col>
+    </nut-row>
+    <nut-row>
+      <nut-col :span="5">
+        <div class="flex-content">{{ $t('create_strategy.first_order_money') }}</div>
+      </nut-col>
+      <nut-col :span="7">
+        <nut-input placeholder="" v-model="customStrategyParam.param.first_order_money" type="number" />
+      </nut-col>
+      <nut-col :span="5">
+        <div class="flex-content">{{ $t('create_strategy.position') }}</div>
       </nut-col>
       <nut-col :span="5">
         <div class="grid-count">
-          <nut-input placeholder="" v-model="customStrategyParam.param.addition_count" type="digit" />
+          <nut-input placeholder="" v-model="customStrategyParam.param.position" readonly />
           <div @click="showLowestOpenQuantity">
             <IconFont name="ask" />
           </div>
@@ -63,7 +75,7 @@
     <nut-divider :style="styleObject" />
   </div>
   <h3 class="basic-title">{{ $t('create_strategy.profit_loss') }}</h3>
-  <div class="course-type">
+  <div class="course-type" style="display: none">
     <nut-row>
       <nut-col :span="5">
         <div class="flex-content">{{ $t('create_strategy.profit_condition') }}</div>
@@ -123,15 +135,6 @@
     <nut-divider :style="styleObject" />
   </div>
   <div>
-    <nut-popup position="bottom" v-model:visible="profitModeShow">
-      <nut-picker
-        v-model="profitMode"
-        :columns="profitModeColumns"
-        :title="$t('create_strategy.select_profit_mode')"
-        @confirm="profitModePopupConfirm"
-        @cancel="profitModeShow = false"
-      />
-    </nut-popup>
     <nut-popup position="bottom" v-model:visible="targetProfitConditionShow">
       <nut-picker
         v-model="targetProfitCondition"
@@ -192,10 +195,12 @@
       pos_side: 'long',
       profit_mode: 'single',
       first_order_money: '',
+      fluctuation: 4.5,
+      addition_gap: 0.5,
+      quantity_serial: '1,1,1,1,2,2,2,2,3,3,3,4,4,5,5,6',
       position: '',
       addition_rate: 0.0,
       addition_count: '',
-      addition_gap: 0.05,
       target_profit_condition: 'gainThenFall',
       target_profit_rate: 4,
       adjust_rate: 1,
@@ -205,15 +210,16 @@
     context: {},
   });
 
-  const profitModeShow = ref(false);
-  // const profitMode = ref();
-  const profitModeDesc = ref(globalProperties.$t('profitMode.single'));
-  const profitModeColumns = ref(tradeUtil.map2List(tradeUtil.profitModeNameMap, globalProperties));
-  const profitModePopupConfirm = ({ selectedValue, selectedOptions }) => {
-    customStrategyParam.param.profit_mode = selectedValue[0];
-    profitModeDesc.value = selectedOptions.map((val) => val.text).join(',');
-    profitModeShow.value = false;
-  };
+  watch(
+    () => {
+      return [customStrategyParam.param.first_order_money];
+    },
+    (newValues) => {
+      if (newValues[0]) {
+        customStrategyParam.param.position = newValues[0] * 49;
+      }
+    },
+  );
 
   const targetProfitConditionShow = ref(false);
   // const targetProfitCondition = ref();
@@ -238,34 +244,40 @@
     let target_profit_rate = customStrategyParam.param.target_profit_rate / 100;
     let adjust_rate = customStrategyParam.param.adjust_rate / 100;
     let loss_condition_rate = customStrategyParam.param.loss_condition_rate / 100;
-    return { ...customStrategyParam.param, target_profit_rate, adjust_rate, loss_condition_rate };
+    let fluctuation = customStrategyParam.param.fluctuation / 100;
+    let addition_gap = customStrategyParam.param.addition_gap / 100;
+    let quantity_serial = customStrategyParam.param.quantity_serial.split(',').map((e) => parseFloat(e));
+    let addition_count = quantity_serial.length;
+    return {
+      ...customStrategyParam.param,
+      target_profit_rate,
+      adjust_rate,
+      loss_condition_rate,
+      fluctuation,
+      addition_gap,
+      quantity_serial,
+      addition_count,
+    };
   };
 
   const verify = async (baseStrategyParam) => {
-    if (customStrategyParam.param.position == 0) {
-      showToast(globalProperties.$t('create_strategy.empty_position'));
+    if (!customStrategyParam.param.first_order_money) {
+      showToast(globalProperties.$t('create_strategy.empty_first_order_money'));
+      return false;
+    }
+    if (
+      parseFloat(customStrategyParam.param.first_order_money * baseStrategyParam.param.lever) < baseStrategyParam.context.lowestOpenQuantity
+    ) {
+      showToast(
+        `${globalProperties.$t('create_strategy.lowestOpenQuantity')}${baseStrategyParam.context.lowestOpenQuantity}${
+          baseStrategyParam.param.unit
+        }`,
+      );
       return false;
     }
     if (customStrategyParam.param.position >= parseFloat(baseStrategyParam.context.availBal)) {
       if (baseStrategyParam.param.backtest != 'true') {
         showToast(globalProperties.$t('create_strategy.position_greatethen_availBal'));
-        return false;
-      }
-    }
-    if (!customStrategyParam.param.addition_count) {
-      showToast(globalProperties.$t('create_strategy.empty_addition_count'));
-      return false;
-    }
-    if (baseStrategyParam.param.backtest != 'true') {
-      if (
-        (customStrategyParam.param.position / customStrategyParam.param.addition_count) * baseStrategyParam.param.lever <
-        baseStrategyParam.context.lowestOpenQuantity
-      ) {
-        showToast(
-          `${globalProperties.$t('create_strategy.lowestOpenQuantity')}${baseStrategyParam.context.lowestOpenQuantity}${
-            baseStrategyParam.param.unit
-          }`,
-        );
         return false;
       }
     }
@@ -327,6 +339,22 @@
         align-items: center;
         // margin: 0 40px;
         // line-height: 60px;
+      }
+
+      .addition_gap {
+        display: flex;
+
+        span {
+          padding-right: 50px;
+        }
+      }
+
+      .fluctuation {
+        display: flex;
+
+        span {
+          padding-right: 50px;
+        }
       }
 
       .nut-divider {
