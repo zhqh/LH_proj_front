@@ -31,6 +31,7 @@ export const lang: langType = {
   },
   list: {
     details: '列表详情e',
+    detail: '策略详情e',
     stcreate: '创建策略e',
     stparam: '策略参数e',
     sthold: '当前持仓e',
@@ -47,7 +48,7 @@ export const lang: langType = {
     running: '运行中e',
     pausing: '已暂停e',
     backtest: '回测e',
-    strategyFloatFL: '实时收益e',
+    strategyFloatFL: '收益e',
     pause: '暂停e',
     stop: '关闭e',
     proceed: '继续e',

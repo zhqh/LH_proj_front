@@ -11,19 +11,25 @@
       :has-more="hasMore"
       @load-more="getStrategy"
     >
-      <div v-for="item in strategies.data" :key="item.id" class="history">
+      <div v-for="item in strategies.data" :key="item.id" class="history" @click="detail(item.id)">
         <div class="stratergy-item">
           <div class="stratergy-item-left">
             <div class="instId">{{ item.backtest ? '(回测)' : '' }}{{ item.instId }}</div>
-            <div class="stratergy-type"
-              >{{ tradeUtil.getNameDesc(item.name, globalProperties) + tradeUtil.getTypeNameDesc(item.type, globalProperties)
-              }}<span>({{ item.posSide == 'long' ? '做多' : '做空' }})</span></div
-            >
           </div>
           <div class="stratergy-item-right"
-            >累计收益<span class="digit"
-              >{{ item.accumulatedProfit.toFixed(2) }}({{ (item.accumulatedProfitRate * 100).toFixed(0) + '%' }})</span
+            ><span
+              >{{ tradeUtil.getNameDesc(item.name, globalProperties) + tradeUtil.getTypeNameDesc(item.type, globalProperties) }}({{
+                item.posSide == 'long' ? '做多' : '做空'
+              }})</span
             ></div
+          >
+        </div>
+        <div class="stratergy-item">
+          <div class="stratergy-item-left"
+            >累计收益<span class="digit">{{ item.accumulatedProfit.toFixed(2) }}</span></div
+          >
+          <div class="stratergy-item-right"
+            >总收益率<span class="digit">{{ (item.accumulatedProfitRate * 100).toFixed(0) + '%' }}</span></div
           >
         </div>
         <div class="stratergy-item">
@@ -38,17 +44,11 @@
           <div class="stratergy-item-left"
             >开始时间<span class="digit">{{ item.startTime }}</span></div
           >
+        </div>
+        <div class="stratergy-item">
           <div class="stratergy-item-right"
             >运行时长<span class="digit">{{ item.duration }}天</span></div
           >
-        </div>
-        <div class="operation">
-          <a @click="showOrderPlan(item.id)"><span class="seperate operation-font-color">执行计划</span></a>
-          <router-link :to="{ path: `/stparam/${item.strategyParamId}` }"
-            ><span class="seperate operation-font-color">策略参数</span></router-link
-          >
-          <router-link :to="{ path: `/sthold/${item.id}` }"><span class="seperate operation-font-color">当前持仓</span></router-link>
-          <router-link :to="{ path: `/sthishold/${item.id}` }"><span class="seperate operation-font-color">历史持仓</span></router-link>
         </div>
         <nut-divider :style="styleObject" />
       </div>
@@ -133,6 +133,10 @@
     getStrategy();
   };
 
+  function detail(id) {
+    router.push({ path: '/stdetail/' + id });
+  }
+
   const orderPlanShowed = ref(false);
   const orderPlan = reactive({
     columns: [
@@ -179,7 +183,7 @@
   .header {
     line-height: 50px;
     padding: 0 20px;
-    font-size: 25px;
+    font-size: 28px;
 
     .instId {
       font-weight: 700;
@@ -199,12 +203,16 @@
       margin-left: auto;
     }
 
-    .history {
+    .history:nth-child(odd) {
       background-color: #f3ecec;
 
       .stratergy-item:nth-child(1) {
         padding-top: 20px;
       }
+    }
+
+    .history:nth-child(even) {
+      background-color: #edd2d2;
     }
 
     .digit {
@@ -227,14 +235,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 5px 20px;
 
     .stratergy-item-left {
-      flex: 4;
+      flex: 1;
     }
 
     .stratergy-item-right {
-      flex: 3;
+      flex: 1;
     }
   }
 

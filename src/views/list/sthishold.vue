@@ -27,12 +27,6 @@
       </div>
     </div>
     <div class="data">
-      <div class="head">
-        <div class="head-column">{{ $t('hisOrder.openQuantity') }}({{ hidOrders.data.length > 0 ? hidOrders.data[0].openUnit : '' }})</div>
-        <div class="head-column">{{ $t('hisOrder.openClosePrice') }}</div>
-        <div class="head-column">{{ $t('hisOrder.openCloseTime') }}</div>
-        <div class="head-column">{{ $t('hisOrder.profitAmount') }}({{ hidOrders.data.length > 0 ? hidOrders.data[0].openUnit : '' }})</div>
-      </div>
       <nut-infinite-loading
         v-model="infinityValue"
         load-txt="Loading..."
@@ -40,12 +34,22 @@
         :has-more="hasMore"
         @load-more="getHisOrder"
       >
-        <div class="body">
-          <div class="body-row" v-for="item in hidOrders.data" :key="item.id">
-            <div class="body-column">{{ item.openQuantity }}</div>
-            <div class="body-column">{{ item.openPrice }}<br />{{ item.closePrice }}</div>
-            <div class="body-column">{{ item.openTime }}<br />{{ item.closeTime }}</div>
-            <div class="body-column">{{ item.profitAmount }}</div>
+        <div class="body" v-for="item in hidOrders.data" :key="item.id">
+          <div class="row">
+            <div>开仓数量：{{ item.openQuantity && item.openQuantity.toFixed(2) }}</div>
+            <div :class="{ 'row red': item.profitAmount > 0, 'row green': item.profitAmount <= 0 }"
+              >开仓收益：{{ item.profitAmount && item.profitAmount.toFixed(2) }}</div
+            >
+          </div>
+          <div class="row">
+            <div>开仓价格：{{ item.openPrice && item.openPrice.toFixed(2) }}</div>
+            <div>平仓价格：{{ item.closePrice && item.closePrice.toFixed(2) }}</div>
+          </div>
+          <div class="row">
+            <div>开仓时间：{{ item.openTime }}</div>
+          </div>
+          <div class="row">
+            <div>平仓时间：{{ item.closeTime }}</div>
           </div>
         </div>
       </nut-infinite-loading>
@@ -73,7 +77,7 @@
   </nut-popup>
 </template>
 
-<script lang="ts" setup name="HomePage">
+<script lang="ts" setup name="Sthishold">
   import { computed, onBeforeMount } from 'vue';
   import { useUserStore } from '/@/store/modules/user';
   import { setLang } from '/@/i18n';
@@ -104,6 +108,9 @@
 
   const hidOrders = reactive({
     data: [],
+  });
+  onMounted(() => {
+    search();
   });
   onActivated(() => {
     search();
@@ -177,6 +184,7 @@
 <style lang="scss" scoped>
   .container {
     font-family: 'Microsoft YaHei', sans-serif;
+    padding: 10px 0;
   }
 
   .query {
@@ -189,6 +197,7 @@
   .data {
     font-size: 23px;
     padding: 0px 30px;
+    border-top: 1px solid #e5e5e5;
   }
 
   .head,
@@ -318,5 +327,29 @@
       width: 100%;
       height: 100%;
     }
+  }
+
+  .body {
+    padding: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 28px;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    > div {
+      flex: 1;
+    }
+  }
+
+  .red {
+    color: red;
+  }
+
+  .green {
+    color: green;
   }
 </style>

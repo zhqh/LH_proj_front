@@ -143,7 +143,6 @@
   onActivated(async () => {
     const myChart = echarts.init(chart.value);
     let strategy = await getStrategyById(route.params.id);
-    console.log(strategy);
     getHistoryCandles(strategy.instId, userStore.getUserInfo.defaultExchange).then((candles) => {
       option.xAxis.data = candles.categoryData;
       option.series[0].data = candles.values;

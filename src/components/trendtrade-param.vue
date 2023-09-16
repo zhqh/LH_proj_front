@@ -100,11 +100,11 @@
   .header {
     line-height: 50px;
     padding: 10px 0;
-    font-size: 25px;
+    font-size: 28px;
 
     .digit {
       margin-left: 20px;
-      font-size: 25px;
+      font-size: 28px;
       // font-weight: bold;
     }
 
@@ -116,16 +116,18 @@
 
   .basic-title {
     padding: 10px 0;
+    font-size: 28px;
   }
 
   .basic-info {
+    font-size: 28px;
   }
 
   .stratergy-item {
     display: flex;
     justify-content: left;
     align-items: center;
-    padding: 0 20px;
+    padding: 10px 20px;
 
     .stratergy-item-left {
       flex: 1;
@@ -183,7 +185,7 @@
   }
 
   .notice {
-    font-size: 30px;
+    font-size: 28px;
     padding: 0px 10px;
   }
 

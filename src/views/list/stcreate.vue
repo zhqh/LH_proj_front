@@ -159,7 +159,7 @@
     <br />
     <div class="course-type">
       <div class="button-align-center">
-        <nut-button block type="info" @click="onKeyStart" :disabled="disableOneKeyStart">{{
+        <nut-button block type="info" @click="oneKeyStart" :disabled="disableOneKeyStart">{{
           baseStrategyParam.param.backtest == 'true' ? $t('create_strategy.start_backtest') : $t('create_strategy.start_strategy')
         }}</nut-button>
         <nut-button block type="info" @click="cancel"> {{ $t('common.cancel') }} </nut-button>
@@ -290,6 +290,7 @@
       type: 'steady',
       name: 'ReboundTrade',
       instId: '',
+      instName: '',
       tradeType: 'SPOT',
       lever: 1,
       triggerCondition: 'immediately',
@@ -416,6 +417,7 @@
   const instIdColumns = ref([]);
   const instIdPopupConfirm = async ({ selectedValue, selectedOptions }) => {
     baseStrategyParam.param.instId = selectedValue[0];
+    baseStrategyParam.param.instName = selectedOptions[0].text;
     instIdDesc.value = selectedOptions.map((val) => val.text).join(',');
     instIdShow.value = false;
     baseStrategyParam.param.lever = 1;
@@ -495,7 +497,7 @@
     },
   );
 
-  const onKeyStart = async () => {
+  const oneKeyStart = async () => {
     let overWriteParam = {};
     if (!baseStrategyParam.context.apiKey) {
       showToast(globalProperties.$t('list.config_api_first'));
@@ -664,7 +666,7 @@
   @import '../../styles/mixin.scss';
 
   .header-stcreate {
-    font-size: 25px;
+    font-size: 28px;
     line-height: 45px;
     padding-top: 25px;
 
@@ -675,6 +677,10 @@
     .loop-mode {
       display: flex;
       align-items: center;
+    }
+
+    .nut-row {
+      padding: 10px 0;
     }
 
     .query-date {
@@ -719,6 +725,15 @@
 
     .course-type {
       padding: 0 60px;
+      font-size: 28px;
+
+      :nth-child(1) {
+        padding: 0;
+      }
+
+      :nth-child(2) {
+        padding: 0;
+      }
 
       .nut-form-item {
         align-items: center;
@@ -736,7 +751,7 @@
     }
 
     .nut-radio__label {
-      font-size: 25px;
+      font-size: 28px;
     }
 
     .st-type {
@@ -767,6 +782,7 @@
 
     .basic-title {
       padding: 10px 50px;
+      font-size: 28px;
     }
 
     .nut-collapse-item__title-mtitle {

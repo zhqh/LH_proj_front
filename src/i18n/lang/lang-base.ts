@@ -55,6 +55,7 @@ export type langType = {
   };
   list: {
     details: string;
+    detail: string;
     stcreate: string;
     stparam: string;
     sthold: string;

@@ -32,11 +32,6 @@
       <div v-for="item in strategies.data" :key="item.id" :class="{ running: item.status == 'RUNNING', pause: item.status == 'PAUSE' }">
         <div class="stratergy-head">
           <div class="stratergy-item-left">
-            <div
-              ><span class="instId">{{ item.instId }}</span
-              ><span class="stratergy-type">{{ tradeUtil.getNameDesc(item.name, globalProperties) }}</span
-              >&nbsp;<span></span
-            ></div>
             <div class="status">
               <IconFont name="check-normal" />
               <b @click="showPauseRemark(item.id)"
@@ -44,74 +39,51 @@
                   item.status == 'RUNNING' ? $t('list.running') : $t('list.pausing')
                 }}</span
                 >{{ item.backtest ? $t('list.backtest') : '' }}</b
+              ><span class="stratergy-type">{{ tradeUtil.getNameDesc(item.name, globalProperties) }}</span
+              >&nbsp;<span class="unit">单位：{{ item.unit }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="body" @click="detail(item.id)">
+          <div class="stratergy-item">
+            <div class="stratergy-item-left"
+              ><span class="seperate"
+                ><span>品种：</span>{{ item.instName ? item.instName + '(' + item.instId + ')' : item.instId }}</span
+              ></div
+            >
+          </div>
+          <div class="stratergy-item">
+            <div class="stratergy-item-left"
+              ><span class="seperate">投入：</span><span>{{ item.openQuantity }}</span></div
+            >
+          </div>
+          <div class="stratergy-item">
+            <div class="stratergy-item-left"
               ><span class="seperate">{{ $t('list.strategyFloatFL') }}：</span
-              ><span :class="{ red: item.floatPL > 0, green: item.floatPL < 0 }"
-                >{{ item.floatPL && item.floatPL.toFixed(2) }}{{ item.unit }}</span
+              ><span :class="{ red: item.floatPL > 0, green: item.floatPL < 0 }" class="bold">{{
+                item.floatPL && item.floatPL.toFixed(2)
+              }}</span></div
+            >
+            <div class="stratergy-item-right"
+              >收益率：<span :class="{ red: item.floatPL > 0, green: item.floatPL < 0 }" class="bold"
+                >{{ parseFloat((item.floatPL / item.openQuantity) * 100).toFixed(2) }}%</span
               >
             </div>
           </div>
-          <div class="stratergy-item-right">
-            <nut-button v-if="item.backtest == false" block type="info" size="mini" @click="process(item.id)" color="#7232dd" plain>{{
-              item.status == 'RUNNING' ? $t('list.pause') : $t('list.proceed')
-            }}</nut-button>
-            <nut-button v-if="item.backtest == false" block type="info" size="mini" @click="stop(item.id)" color="#7232dd" plain>{{
-              $t('list.stop')
-            }}</nut-button>
-          </div>
-        </div>
-        <div class="stratergy-item">
-          <div class="stratergy-item-left"
-            >{{ $t('list.todayProfit') }}<span class="digit">{{ item.todayProfit.toFixed(2) }}{{ item.unit }}</span>
-          </div>
-          <div class="stratergy-item-right"
-            >{{ $t('list.accumulatedProfit')
-            }}<span class="digit"
-              >{{ item.accumulatedProfit.toFixed(2) }}{{ item.unit }}({{ (item.accumulatedProfitRate * 100).toFixed(0) + '%' }})</span
+          <div class="stratergy-item">
+            <div class="stratergy-item-left"
+              ><span class="seperate">现价：</span><span>{{ item.price }}</span></div
             >
+            <div class="stratergy-item-right"
+              >成本价：<span>{{ item.costPrice }}</span>
+            </div>
           </div>
-        </div>
-        <div class="stratergy-item">
-          <div class="stratergy-item-left"
-            >{{ $t('list.openQuantity') }}<span class="digit">{{ item.openQuantity }}{{ item.unit }}</span></div
-          >
-          <div class="stratergy-item-right"
-            >{{ $t('list.openCount') }}<span class="digit">{{ item.openCount }}单</span>
-          </div>
-        </div>
-        <div class="stratergy-item">
-          <div class="stratergy-item-left"
-            >{{ $t('list.closeCount') }}<span class="digit">{{ item.closeCount }}单</span>
-          </div>
-          <div class="stratergy-item-right"
-            >{{ $t('list.maxLoss') }}<span class="digit">{{ (Math.abs(item.maxLoss) * 100).toFixed(0) }}%</span>
-          </div>
-        </div>
-        <div class="stratergy-item">
-          <div class="stratergy-item-left"
-            >{{ $t('list.startTime') }}<span class="digit">{{ item.startTime }}</span></div
-          >
-          <div class="stratergy-item-right"
-            >{{ $t('list.duration') }}<span class="digit">{{ item.duration }}天</span></div
-          >
-        </div>
-        <div class="stratergy-item">
-          <div class="stratergy-item-left"
-            >{{ $t('list.liqPx') }}<span class="digit">{{ item.liqPx || '--' }}</span></div
-          >
         </div>
         <div class="operation">
-          <a @click="showOrderPlan(item.id)"
-            ><span class="seperate operation-font-color">{{ $t('list.orderPlan') }}</span></a
-          >
-          <router-link :to="{ path: `/stparam/${item.strategyParamId}` }"
-            ><span class="seperate operation-font-color">{{ $t('list.strategyParam') }}</span></router-link
-          >
-          <router-link :to="{ path: `/sthold/${item.id}` }"
-            ><span class="seperate operation-font-color">{{ $t('list.holdOrder') }}</span></router-link
-          >
-          <router-link :to="{ path: `/sthishold/${item.id}` }"
-            ><span class="seperate operation-font-color">{{ $t('list.hisOrder') }}</span></router-link
-          >
+          <div v-if="item.backtest == false" @click="process(item.id)">{{
+            item.status == 'RUNNING' ? $t('list.pause') : $t('list.proceed')
+          }}</div>
+          <div v-if="item.backtest == false" @click="stop(item.id)">{{ $t('list.stop') }}</div>
         </div>
         <nut-divider :style="styleObject" />
       </div>
@@ -180,6 +152,10 @@
     }
     throw new Error(globalProperties.$t('list.get_api_error'));
   };
+
+  function detail(id) {
+    router.push({ path: '/stdetail/' + id });
+  }
 
   const process = (strategyId) => {
     confirmClick('', '', async () => {
@@ -250,6 +226,9 @@
     loading.value = false;
     if (r.code == 0) {
       strategies.data = [...strategies.data, ...r.data.records];
+      if (Object.keys(floatPLMap).length > 0) {
+        setFloatPL();
+      }
       infinityValue.value = false;
       current.value++;
       if (current.value > r.data.pages) hasMore.value = false;
@@ -275,12 +254,28 @@
     }
   };
 
+  const floatPLMap = ref({});
   const getFloatPL = async () => {
     const r = await useStrategyApi().getTotalFloatFL({ exchange: userStore.getUserInfo.defaultExchange });
     if (r.code == 0) {
-      strategies.floatPL = r.data && r.data.toFixed(2);
+      floatPLMap.value = r.data;
+      setFloatPL();
     }
   };
+
+  function setFloatPL() {
+    if (Object.keys(floatPLMap.value).length === 0) {
+      return;
+    }
+    strategies.data.forEach((e) => {
+      if (!floatPLMap.value[e.id]) {
+        return;
+      }
+      e.floatPL = floatPLMap.value[e.id].pl;
+      e.price = floatPLMap.value[e.id].price;
+    });
+    strategies.floatPL = floatPLMap.value && floatPLMap.value.total.pl.toFixed(2);
+  }
 
   const getInvestment = async () => {
     strategies.investment = {};
@@ -342,10 +337,11 @@
   .header {
     line-height: 50px;
     padding: 10px 0;
-    font-size: 25px;
+    font-size: 26px;
 
     .total-floatPL {
       padding: 0 10px;
+      font-size: 28px;
 
       b {
         font-size: 40px;
@@ -382,7 +378,7 @@
 
     .digit {
       margin-left: 20px;
-      font-size: 22px;
+      font-size: 28px;
       font-weight: bold;
     }
 
@@ -398,7 +394,7 @@
 
     .seperate {
       padding-left: 20px;
-      font-size: 25px;
+      font-size: 28px;
     }
 
     .orderplan {
@@ -411,8 +407,8 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    padding: 0 20px;
-    font-size: 23px;
+    padding: 5px 20px;
+    font-size: 28px;
 
     .stratergy-item-left {
       flex: 4;
@@ -433,7 +429,7 @@
   }
 
   .stratergy-head {
-    padding-top: 10px;
+    padding-top: 25px;
 
     .stratergy-item-left {
       flex: 2;
@@ -445,8 +441,24 @@
   }
 
   .operation {
+    display: flex;
+    justify-content: right;
     text-align: center;
-    font-size: 25px;
+    font-size: 30px;
+    padding: 10px;
+
+    > view {
+      margin-right: 20px;
+    }
+
+    > div {
+      background-color: white;
+      border-radius: 8px;
+      color: blue;
+      width: 120px;
+      margin: 0 10px;
+      height: 45px;
+    }
 
     .seperate {
       margin: 0 15px;
@@ -589,5 +601,14 @@
 
   .green {
     color: green;
+  }
+
+  .bold {
+    font-weight: 700;
+  }
+
+  .unit {
+    padding-right: 20px;
+    margin-left: auto;
   }
 </style>

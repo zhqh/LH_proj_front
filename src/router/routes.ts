@@ -53,6 +53,14 @@ export const routes = [
         },
       },
       {
+        path: 'stdetail/:id',
+        component: () => import('/@/views/list/stdetail.vue'),
+        meta: {
+          title: 'list.detail',
+          keepAlive: true,
+        },
+      },
+      {
         path: 'stcreate',
         component: () => import('/@/views/list/stcreate.vue'),
         meta: {

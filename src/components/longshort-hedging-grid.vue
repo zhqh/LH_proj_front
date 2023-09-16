@@ -313,7 +313,7 @@
   @import '../styles/mixin.scss';
 
   .header-stcreate {
-    font-size: 25px;
+    font-size: 28px;
     line-height: 45px;
     padding-top: 25px;
 
@@ -336,6 +336,10 @@
     .course-type {
       padding: 0 60px;
 
+      :nth-child(1) {
+        padding: 0;
+      }
+
       .nut-form-item {
         align-items: center;
         // margin: 0 40px;
@@ -352,7 +356,7 @@
     }
 
     .nut-radio__label {
-      font-size: 25px;
+      font-size: 28px;
     }
 
     .st-type {
@@ -379,6 +383,7 @@
 
     .basic-title {
       padding: 10px 50px;
+      font-size: 28px;
 
       span {
         font-size: small;
@@ -438,5 +443,9 @@
         }
       }
     }
+  }
+
+  .nut-row {
+    padding: 10px 0;
   }
 </style>

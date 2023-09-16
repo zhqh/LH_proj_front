@@ -5,11 +5,10 @@
       <div class="stratergy-item">
         <div class="stratergy-item-left"
           >{{ $t('create_strategy.type')
-          }}<span class="digit">{{ tradeUtil.getTypeNameDesc(baseStrategyParam.param.type, globalProperties) }}</span></div
-        >
+          }}<span class="digit">{{ tradeUtil.getTypeNameDesc(baseStrategyParam.param.type, globalProperties) }}</span>
+        </div>
         <div class="stratergy-item-right"
-          >{{ $t('create_strategy.name')
-          }}<span class="digit">{{ tradeUtil.getNameDesc(baseStrategyParam.param.name, globalProperties) }}</span></div
+          ><span class="digit">{{ tradeUtil.getNameDesc(baseStrategyParam.param.name, globalProperties) }}</span></div
         >
       </div>
       <div class="stratergy-item">
@@ -20,7 +19,12 @@
       </div>
       <div class="stratergy-item">
         <div class="stratergy-item-left"
-          >{{ $t('create_strategy.instId') }}<span class="digit">{{ baseStrategyParam.param.instId }}</span></div
+          >{{ $t('create_strategy.instId')
+          }}<span class="digit">{{
+            baseStrategyParam.param.instName
+              ? baseStrategyParam.param.instName + '(' + baseStrategyParam.param.instId + ')'
+              : baseStrategyParam.param.instId
+          }}</span></div
         >
       </div>
       <div class="stratergy-item">
@@ -136,12 +140,22 @@
   let currentStrategy;
   let currentStrategyComponent = ref();
 
+  onMounted(() => {
+    getStrategyParam();
+  });
+
   onActivated(() => {
     getStrategyParam();
   });
 
+  const props = defineProps({
+    strategyParamId: String,
+  });
+
+  const { strategyParamId } = toRefs(props);
+
   const getStrategyParam = async () => {
-    const r = await useStrategyParamApi().list(route.params.id);
+    const r = await useStrategyParamApi().list(strategyParamId.value);
     if (r.code == 0) {
       Object.assign(baseStrategyParam.param, r.data);
       currentStrategy = strategyMap[baseStrategyParam.param.name];
@@ -152,11 +166,11 @@
   .header {
     line-height: 50px;
     padding: 10px 50px;
-    font-size: 25px;
+    font-size: 28px;
 
     .digit {
       margin-left: 20px;
-      font-size: 25px;
+      font-size: 28px;
       // font-weight: bold;
     }
 
@@ -172,6 +186,7 @@
 
   .basic-info {
     padding: 0;
+    font-size: 28px;
     // border: 1px solid gray;
     // border-radius: 10px;
     // background-color: #f1f1f1;
@@ -181,7 +196,7 @@
     display: flex;
     justify-content: left;
     align-items: center;
-    padding: 0 20px;
+    padding: 10px 20px;
 
     .stratergy-item-left {
       flex: 1;
@@ -239,7 +254,7 @@
   }
 
   .notice {
-    font-size: 30px;
+    font-size: 28px;
     padding: 0px 10px;
   }
 

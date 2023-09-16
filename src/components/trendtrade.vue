@@ -303,7 +303,7 @@
   @import '../styles/mixin.scss';
 
   .header-stcreate {
-    font-size: 25px;
+    font-size: 28px;
     line-height: 45px;
     padding-top: 25px;
 
@@ -325,6 +325,10 @@
 
     .course-type {
       padding: 0 60px;
+
+      :nth-child(1) {
+        padding: 0;
+      }
 
       .pos-side {
         display: flex;
@@ -371,7 +375,7 @@
     }
 
     .nut-radio__label {
-      font-size: 25px;
+      font-size: 28px;
     }
 
     .st-type {
@@ -398,6 +402,7 @@
 
     .basic-title {
       padding: 10px 50px;
+      font-size: 28px;
     }
 
     .nut-collapse-item__title-mtitle {
@@ -433,5 +438,9 @@
         margin-right: 10px;
       }
     }
+  }
+
+  .nut-row {
+    padding: 10px 0;
   }
 </style>
