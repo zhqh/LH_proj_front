@@ -213,6 +213,13 @@ export function useStrategyApi() {
         params,
       });
     },
+    deleteHoldOrder: (params) => {
+      return request({
+        url: 'api/trade/strategy/deleteHoldOrder',
+        method: 'post',
+        data: params,
+      });
+    },
     dcstate: (params) => {
       return request({
         url: 'api/trade/strategy/dcstate',
@@ -367,6 +374,16 @@ export function useOpsApi() {
         url: 'api/trade/ops/strategy/refresh',
         method: 'get',
         params,
+      });
+    },
+  };
+}
+export function useSignalApi() {
+  return {
+    getSignal: (signalName) => {
+      return request({
+        url: `api/trade/signal/${signalName}`,
+        method: 'get',
       });
     },
   };

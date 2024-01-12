@@ -66,7 +66,7 @@
             >
             <div class="stratergy-item-right"
               >收益率：<span :class="{ red: item.floatPL > 0, green: item.floatPL < 0 }" class="bold"
-                >{{ parseFloat((item.floatPL / item.openQuantity) * 100).toFixed(2) }}%</span
+                >{{ item.openQuantity ? parseFloat((item.floatPL / item.openQuantity) * 100).toFixed(2) : 0 }}%</span
               >
             </div>
           </div>

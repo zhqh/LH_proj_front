@@ -86,6 +86,7 @@ export const lang: langType = {
     withdraw: '点卡提现',
     analysis: '交易分析',
     manage: '系统管理',
+    signal: '信号提示',
     language: '切换语言',
     todayProfit: '今日收益',
     monthProfit: '本月收益',
@@ -280,7 +281,7 @@ export const lang: langType = {
     entire: '整体盈利',
   },
   triggerCondition: {
-    // price: '价格触发',
+    price: '价格触发',
     immediately: '立即触发',
   },
   loopMode: {

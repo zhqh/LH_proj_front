@@ -83,87 +83,95 @@
         </nut-avatar>
       </router-link>
     </nut-grid-item>
+    <nut-grid-item :text="$t('member.signal')" v-if="userStore.getUserInfo.username == 'zhqh'">
+      <router-link to="/signal">
+        <nut-avatar size="normal">
+          <img src="../../assets/xitongguanli.png" />
+        </nut-avatar>
+      </router-link>
+    </nut-grid-item>
   </nut-grid>
 </template>
 
 <script lang="ts" setup name="MemberPage">
-import { useUserStore } from '/@/store/modules/user';
-import { useRouter } from 'vue-router';
-import { Dongdong, ArrowRight } from '@nutui/icons-vue';
-import { useProfitApi, useStrategyApi } from '/@/api/trade';
-import { showToast } from 'vant';
+  import { useUserStore } from '/@/store/modules/user';
+  import { useRouter } from 'vue-router';
+  import { Dongdong, ArrowRight } from '@nutui/icons-vue';
+  import { useProfitApi, useStrategyApi } from '/@/api/trade';
+  import { showToast } from 'vant';
 
-const router = useRouter();
-const userStore = useUserStore();
-const username = computed(() => {
-  const { username = '' } = userStore.getUserInfo || {};
-  return username;
-});
+  const router = useRouter();
+  const userStore = useUserStore();
+  const username = computed(() => {
+    const { username = '' } = userStore.getUserInfo || {};
+    return username;
+  });
 
-const goLogin = () => {
-  router.push('/login');
-};
+  const goLogin = () => {
+    router.push('/login');
+  };
 
-let profit = reactive({
-  todayProfit: 0,
-  currentMonthProfit: 0,
-  accumulatedProfit: 0,
-});
+  let profit = reactive({
+    todayProfit: 0,
+    currentMonthProfit: 0,
+    accumulatedProfit: 0,
+  });
 
-onActivated(() => {
-  getProfit();
-});
+  onActivated(() => {
+    getProfit();
+  });
 
-const getProfit = async () => {
-  const r = await useProfitApi().getProfit({});
-  if (r.code == 0) {
-    Object.assign(profit, r.data);
-  }
-};
+  const getProfit = async () => {
+    const r = await useProfitApi().getProfit({});
+    if (r.code == 0) {
+      Object.assign(profit, r.data);
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
-.amount {
-  span {
-    font-size: 30px;
-  }
-}
-
-.section-title {
-  font-size: 26px;
-  margin: 10px;
-}
-
-.strategy {}
-
-.avatar-wrap {
-  display: flex;
-  margin: 30px 40px;
-  align-items: center;
-  // background-color: gray;
-
-  .member-detail {
-    margin-left: 20px;
-    display: flex;
-    width: 100%;
-
-    a {
-      margin-left: auto;
+  .amount {
+    span {
+      font-size: 30px;
     }
+  }
 
-    .nickname {
-      font-size: 25px;
-      font-weight: bold;
+  .section-title {
+    font-size: 26px;
+    margin: 10px;
+  }
 
-      .nut-button {
-        margin-left: 10px;
+  .strategy {
+  }
+
+  .avatar-wrap {
+    display: flex;
+    margin: 30px 40px;
+    align-items: center;
+    // background-color: gray;
+
+    .member-detail {
+      margin-left: 20px;
+      display: flex;
+      width: 100%;
+
+      a {
+        margin-left: auto;
+      }
+
+      .nickname {
+        font-size: 25px;
+        font-weight: bold;
+
+        .nut-button {
+          margin-left: 10px;
+        }
+      }
+
+      .info {
+        margin-top: 10px;
+        font-size: 16px;
       }
     }
-
-    .info {
-      margin-top: 10px;
-      font-size: 16px;
-    }
   }
-}
 </style>

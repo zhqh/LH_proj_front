@@ -197,6 +197,14 @@ export const routes = [
         },
       },
       {
+        path: 'signal',
+        component: () => import('/@/views/member/signal.vue'),
+        meta: {
+          title: 'member.signal',
+          keepAlive: true,
+        },
+      },
+      {
         path: 'version',
         component: () => import('/@/views/member/version.vue'),
         meta: {

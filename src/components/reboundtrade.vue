@@ -30,10 +30,10 @@
       </nut-col>
     </nut-row>
     <nut-row>
-      <nut-col :span="5">
+      <nut-col :span="5" v-if="false">
         <div class="flex-content">{{ $t('create_strategy.fluctuation') }}</div>
       </nut-col>
-      <nut-col :span="7" class="fluctuation">
+      <nut-col :span="7" class="fluctuation" v-if="false">
         <div><nut-input placeholder="" v-model="customStrategyParam.param.fluctuation" type="number" /></div>
         <span>%</span>
       </nut-col>
@@ -196,8 +196,12 @@
       profit_mode: 'single',
       first_order_money: '',
       fluctuation: 4.5,
-      addition_gap: 0.5,
-      quantity_serial: '1,1,1,1,2,2,2,2,3,3,3,4,4,5,5,6',
+      // addition_gap: 0.5,
+      addition_gap: 0.75,
+      // addition_gap: 2,
+      // quantity_serial: '1,1,1,1,2,2,2,2,3,3,3,4,4,5,5,6',
+      // quantity_serial: '1,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15,0.15',
+      quantity_serial: '0,1,1,1,1,2,2,2,2,3,3,3,4,4,5,5,6',
       position: '',
       addition_rate: 0.0,
       addition_count: '',
@@ -216,6 +220,7 @@
     },
     (newValues) => {
       if (newValues[0]) {
+        //以后再修改
         customStrategyParam.param.position = newValues[0] * 49;
       }
     },
@@ -246,7 +251,16 @@
     let loss_condition_rate = customStrategyParam.param.loss_condition_rate / 100;
     let fluctuation = customStrategyParam.param.fluctuation / 100;
     let addition_gap = customStrategyParam.param.addition_gap / 100;
-    let quantity_serial = customStrategyParam.param.quantity_serial.split(',').map((e) => parseFloat(e));
+    let quantity_serial = [];
+    if (customStrategyParam.param.quantity_serial.includes(',')) {
+      quantity_serial = customStrategyParam.param.quantity_serial.split(',').map((e) => parseFloat(e));
+    } else if (customStrategyParam.param.quantity_serial.includes('*')) {
+      let expression = customStrategyParam.param.quantity_serial.split('*');
+      let quantity_serial_value = expression[0];
+      let quantity_serial_size = expression[1];
+      quantity_serial = Array(parseInt(quantity_serial_size));
+      quantity_serial.fill(parseFloat(quantity_serial_value));
+    }
     let addition_count = quantity_serial.length;
     return {
       ...customStrategyParam.param,
@@ -273,6 +287,10 @@
           baseStrategyParam.param.unit
         }`,
       );
+      return false;
+    }
+    if (customStrategyParam.param.quantity_serial.endsWith(',')) {
+      showToast();
       return false;
     }
     if (customStrategyParam.param.position >= parseFloat(baseStrategyParam.context.availBal)) {

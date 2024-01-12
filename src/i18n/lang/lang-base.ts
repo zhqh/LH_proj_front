@@ -43,6 +43,7 @@ export type langType = {
     withdraw: string;
     analysis: string;
     manage: string;
+    signal: string;
     language: string;
     todayProfit: string;
     monthProfit: string;
@@ -268,7 +269,7 @@ export type langType = {
     entire: string;
   };
   triggerCondition: {
-    // price: '价格触发',
+    price: string;
     immediately: string;
   };
   loopMode: {

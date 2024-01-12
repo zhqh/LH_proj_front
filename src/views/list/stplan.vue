@@ -9,19 +9,28 @@
     </div>
     <div class="body" v-for="item in orderPlan.data" :key="item.totalAmount">
       <div class="row">
-        <div>买入数量：{{ item.quantity }}</div>
+        <div>{{ item.num }}. 数量：{{ item.quantity }}</div>
         <div>买入价格：{{ item.price }}</div>
       </div>
       <div class="row">
         <div>投入金额：{{ item.context.totalAmount }}</div>
+        <div>下跌比率：{{ (((item.num - 1) * amplitude) / (orderPlan.data.length - 1)).toFixed(2) }}%</div>
       </div>
       <div class="row">
         <div>浮亏金额：{{ item.context.totalLoss }}</div>
-        <div>浮亏比率：{{ parseFloat((item.context.totalLoss / item.context.totalAmount) * 100).toFixed(2) }}%</div>
+        <div
+          >浮亏比率：{{
+            item.context.totalAmount != 0 ? parseFloat((item.context.totalLoss / item.context.totalAmount) * 100).toFixed(2) : 0
+          }}%</div
+        >
       </div>
       <div class="row">
         <div>首单浮盈：{{ item.context.backFirstOrderProfit }}</div>
-        <div>浮盈比率：{{ parseFloat((item.context.backFirstOrderProfit / item.context.totalAmount) * 100).toFixed(2) }}%</div>
+        <div
+          >浮盈比率：{{
+            item.context.totalAmount != 0 ? parseFloat((item.context.backFirstOrderProfit / item.context.totalAmount) * 100).toFixed(2) : 0
+          }}%</div
+        >
       </div>
     </div>
   </div>
@@ -132,6 +141,10 @@
   .body {
     padding: 20px;
     border-bottom: 1px solid #e5e5e5;
+  }
+
+  .body:nth-child(even) {
+    background-color: #f3f3f3;
   }
 
   .title,

@@ -24,7 +24,7 @@ export const profitModeNameMap = {
   entire: 'profitMode.entire',
 };
 export const triggerConditionNameMap = {
-  // price: '价格触发',
+  price: 'triggerCondition.price',
   immediately: 'triggerCondition.immediately',
 };
 export const loopModeNameMap = {

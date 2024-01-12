@@ -38,7 +38,7 @@ export default function ({ command, mode }: ConfigEnv): UserConfig {
       proxy: {
         '/api': {
           target: 'http://localhost:8080',
-          // target: 'http://8.218.142.250',
+          // target: 'http://8.218.142.250:8080',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ''),
         },

@@ -293,7 +293,7 @@
       instName: '',
       tradeType: 'SPOT',
       lever: 1,
-      triggerCondition: 'immediately',
+      triggerCondition: 'price',
       triggerPrice: 0,
       loopMode: 'loop',
       closeProfitRate: '',
@@ -400,9 +400,11 @@
         instruments = instruments.filter((e) => e.instId.indexOf('-USD-') > -1);
         break;
     }
-    instIdColumns.value = instruments.map((e) => {
+    //默认显示前100个，其他可以通过搜索获取
+    wholeInstIdColumns.value = instruments.map((e) => {
       return { text: e.instName || e.instId, value: e.instId };
     });
+    instIdColumns.value = [...wholeInstIdColumns.value.slice(0, 200)];
     instIdDesc.value = '';
     baseStrategyParam.param.instId = '';
     baseStrategyParam.param.unit = '';
@@ -414,6 +416,7 @@
   const instIdShow = ref(false);
   // const instId = ref();
   const instIdDesc = ref('');
+  const wholeInstIdColumns = ref([]);
   const instIdColumns = ref([]);
   const instIdPopupConfirm = async ({ selectedValue, selectedOptions }) => {
     baseStrategyParam.param.instId = selectedValue[0];
@@ -434,6 +437,13 @@
     getLowestOpenQuantity(baseStrategyParam.param.instId, baseStrategyParam.param.tradeType).then(
       (e) => (baseStrategyParam.context.lowestOpenQuantity = e),
     );
+    if (baseStrategyParam.param.triggerCondition == 'price') {
+      if (baseStrategyParam.param.instId) {
+        baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
+      }
+    } else {
+      baseStrategyParam.param.triggerPrice = 0;
+    }
   };
 
   let instIdSearch = reactive({ searchKey: '', located: [] });
@@ -441,7 +451,7 @@
     if (!instIdSearch.searchKey) {
       return;
     }
-    const found = instIdColumns.value.find((e) => {
+    const found = wholeInstIdColumns.value.find((e) => {
       let instId = e.text;
       let index = instId.indexOf('-');
       if (index > -1) {
@@ -450,19 +460,26 @@
       return instId.toLowerCase().indexOf(instIdSearch.searchKey.toLowerCase()) > -1;
     });
     if (found) {
+      instIdColumns.value.push(found);
       instIdSearch.located = [found.value];
     }
   };
 
   const triggerConditionShow = ref(false);
   // const triggerCondition = ref();
-  const triggerConditionDesc = ref(globalProperties.$t('triggerCondition.immediately'));
-  console.log(globalProperties);
+  const triggerConditionDesc = ref(globalProperties.$t('triggerCondition.price'));
   const triggerConditionColumns = ref(tradeUtil.map2List(tradeUtil.triggerConditionNameMap, globalProperties));
-  const triggerConditionPopupConfirm = ({ selectedValue, selectedOptions }) => {
+  const triggerConditionPopupConfirm = async ({ selectedValue, selectedOptions }) => {
     baseStrategyParam.param.triggerCondition = selectedValue[0];
     triggerConditionDesc.value = selectedOptions.map((val) => val.text).join(',');
     triggerConditionShow.value = false;
+    if (baseStrategyParam.param.triggerCondition == 'price') {
+      if (baseStrategyParam.param.instId) {
+        baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
+      }
+    } else {
+      baseStrategyParam.param.triggerPrice = 0;
+    }
   };
 
   onActivated(async () => {
@@ -479,9 +496,10 @@
       tradeType = 'SWAP';
     }
     loadInstruments(tradeType, null).then((e) => {
-      instIdColumns.value = e.map((e) => {
+      wholeInstIdColumns.value = e.map((e) => {
         return { text: e.instName || e.instId, value: e.instId };
       });
+      instIdColumns.value = [...wholeInstIdColumns.value.slice(0, 200)];
     });
   });
 
@@ -518,9 +536,9 @@
       }
       Object.assign(overWriteParam, { startTime, stopTime });
     }
-    if (baseStrategyParam.param.triggerCondition == 'price') {
-      baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
-    }
+    // if (baseStrategyParam.param.triggerCondition == 'price') {
+    //   baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
+    // }
     const customParam = await invokeStrategyComponentMethod('getCustomParam');
     Object.assign(overWriteParam, {
       closeProfitRate: baseStrategyParam.param.closeProfitRate / 100,

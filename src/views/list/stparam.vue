@@ -61,6 +61,8 @@
         <div class="stratergy-item-right" v-if="baseStrategyParam.param.triggerCondition == 'price'"
           >{{ $t('create_strategy.triggerPrice') }}<span class="digit">{{ baseStrategyParam.param.triggerPrice }}</span></div
         >
+      </div>
+      <div class="stratergy-item">
         <div class="stratergy-item-left"
           >{{ $t('create_strategy.loopMode')
           }}<span class="digit">{{ tradeUtil.getLoopModeNameDesc(baseStrategyParam.param.loopMode, globalProperties) }}</span></div
