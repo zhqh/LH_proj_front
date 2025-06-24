@@ -51,6 +51,7 @@
                 ><span>品种：</span>{{ item.instName ? item.instName + '(' + item.instId + ')' : item.instId }}</span
               ></div
             >
+            <div class="stratergy-item-right">{{ item.mode == 'formal' ? '--------正式单' : '--------模拟单' }} </div>
           </div>
           <div class="stratergy-item">
             <div class="stratergy-item-left"
@@ -80,6 +81,7 @@
           </div>
         </div>
         <div class="operation">
+          <div v-if="item.backtest == false && item.mode == 'simulated'" @click="activate(item.id)">转正</div>
           <div v-if="item.backtest == false" @click="process(item.id)">{{
             item.status == 'RUNNING' ? $t('list.pause') : $t('list.proceed')
           }}</div>
@@ -156,6 +158,18 @@
   function detail(id) {
     router.push({ path: '/stdetail/' + id });
   }
+
+  const activate = (strategyId) => {
+    confirmClick('', '', async () => {
+      let strategy = strategies.data.find((e) => e.id == strategyId);
+      let exchange = userStore.getUserInfo.defaultExchange;
+      const r = await useStrategyApi().activate({ strategyId, exchange });
+      if (r.code == 0) {
+        strategy.mode = 'formal';
+        showToast(globalProperties.$t('common.operate_success'));
+      }
+    });
+  };
 
   const process = (strategyId) => {
     confirmClick('', '', async () => {

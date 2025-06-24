@@ -213,6 +213,13 @@ export function useStrategyApi() {
         params,
       });
     },
+    activate: (params) => {
+      return request({
+        url: 'api/trade/strategy/activate',
+        method: 'get',
+        params,
+      });
+    },
     deleteHoldOrder: (params) => {
       return request({
         url: 'api/trade/strategy/deleteHoldOrder',

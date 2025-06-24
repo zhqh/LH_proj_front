@@ -17,6 +17,19 @@
           </div>
         </nut-col>
       </nut-row>
+      <nut-row class="strategy-mode">
+        <nut-col :span="5">
+          <div>策略模式</div>
+        </nut-col>
+        <nut-col :span="19">
+          <div class="st-type radio-group-container">
+            <nut-radio-group v-model="baseStrategyParam.param.mode" direction="horizontal" @change="typeChanged">
+              <nut-radio label="simulated">模拟单</nut-radio>
+              <nut-radio label="formal">正式单</nut-radio>
+            </nut-radio-group>
+          </div>
+        </nut-col>
+      </nut-row>
       <nut-row class="strategy-type">
         <nut-col :span="5">
           <div>{{ $t('create_strategy.type') }}</div>
@@ -287,6 +300,7 @@
 
   const baseStrategyParam = reactive({
     param: {
+      mode: 'simulated',
       type: 'steady',
       name: 'ReboundTrade',
       instId: '',
@@ -690,6 +704,7 @@
 
     .backtest,
     .strategy-type,
+    .strategy-mode,
     .trade-type,
     .pos-side,
     .loop-mode {

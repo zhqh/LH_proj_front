@@ -11,7 +11,7 @@
             ><span class="stratergy-type">{{ tradeUtil.getNameDesc(strategy.name, globalProperties) }}({{ strategy.unit }})</span>
           </div>
         </div>
-        <div class="stratergy-item-right"> </div>
+        <div class="stratergy-item-right">{{ strategy.mode == 'formal' ? '正式单' : '模拟单' }}</div>
       </div>
       <div class="stratergy-item">
         <div class="stratergy-item-left"
