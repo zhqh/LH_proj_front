@@ -126,13 +126,31 @@
           </div>
         </nut-col>
       </nut-row>
+      <nut-row>
+        <nut-col :span="5">
+          <div>实时价格</div>
+        </nut-col>
+        <nut-col :span="19">
+          <div>
+            <nut-input v-model="currentPrice" />
+          </div>
+        </nut-col>
+      </nut-row>
       <nut-row v-show="baseStrategyParam.param.triggerCondition == 'price'">
         <nut-col :span="5">
           <div>{{ $t('create_strategy.triggerPrice') }}</div>
         </nut-col>
-        <nut-col :span="19">
+        <nut-col :span="12">
           <div>
-            <nut-input :placeholder="$t('create_strategy.input_triggerPrice')" v-model="baseStrategyParam.param.triggerPrice" />
+            <nut-input-number v-model="baseStrategyParam.param.triggerPrice" :step="step" decimal-places="2" />
+          </div>
+        </nut-col>
+        <nut-col :span="4">
+          <div>步长%</div>
+        </nut-col>
+        <nut-col :span="3">
+          <div>
+            <nut-input v-model="stepPercent" @update:model-value="stepPercentChanged" />
           </div>
         </nut-col>
       </nut-row>
@@ -324,8 +342,17 @@
     },
   });
 
+  const currentPrice = ref(0);
+  const step = ref(0);
+  const stepPercent = ref(10);
+
   const typeChanged = (value: any) => {
     console.log(value);
+  };
+
+  const stepPercentChanged = (value: any) => {
+    step.value = (currentPrice.value * value) / 100;
+    baseStrategyParam.param.triggerPrice = currentPrice.value;
   };
 
   const queryDate = reactive({
@@ -451,12 +478,10 @@
     getLowestOpenQuantity(baseStrategyParam.param.instId, baseStrategyParam.param.tradeType).then(
       (e) => (baseStrategyParam.context.lowestOpenQuantity = e),
     );
-    if (baseStrategyParam.param.triggerCondition == 'price') {
-      if (baseStrategyParam.param.instId) {
-        baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
-      }
-    } else {
-      baseStrategyParam.param.triggerPrice = 0;
+    if (baseStrategyParam.param.instId) {
+      baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
+      currentPrice.value = baseStrategyParam.param.triggerPrice;
+      step.value = (currentPrice.value * stepPercent.value) / 100;
     }
   };
 
@@ -487,12 +512,10 @@
     baseStrategyParam.param.triggerCondition = selectedValue[0];
     triggerConditionDesc.value = selectedOptions.map((val) => val.text).join(',');
     triggerConditionShow.value = false;
-    if (baseStrategyParam.param.triggerCondition == 'price') {
-      if (baseStrategyParam.param.instId) {
-        baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
-      }
-    } else {
-      baseStrategyParam.param.triggerPrice = 0;
+    if (baseStrategyParam.param.instId) {
+      baseStrategyParam.param.triggerPrice = await getPrice(baseStrategyParam.param.instId);
+      currentPrice.value = baseStrategyParam.param.triggerPrice;
+      step.value = (currentPrice.value * stepPercent.value) / 100;
     }
   };
 

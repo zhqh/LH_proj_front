@@ -27,6 +27,7 @@ declare module '@vue/runtime-core' {
     NutGridItem: typeof import('@nutui/nutui')['GridItem']
     NutInfiniteLoading: typeof import('@nutui/nutui')['InfiniteLoading']
     NutInput: typeof import('@nutui/nutui')['Input']
+    NutInputNumber: typeof import('@nutui/nutui')['InputNumber']
     NutMenu: typeof import('@nutui/nutui')['Menu']
     NutMenuItem: typeof import('@nutui/nutui')['MenuItem']
     NutNoticebar: typeof import('@nutui/nutui')['Noticebar']

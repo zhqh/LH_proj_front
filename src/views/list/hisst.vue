@@ -14,7 +14,7 @@
       <div v-for="item in strategies.data" :key="item.id" class="history" @click="detail(item.id)">
         <div class="stratergy-item">
           <div class="stratergy-item-left">
-            <div class="instId">{{ item.backtest ? '(回测)' : '' }}{{ item.instId }}</div>
+            <div class="instId">{{ item.backtest ? '(回测)' : '' }}{{ item.instId }}-{{ item.instName }}</div>
           </div>
           <div class="stratergy-item-right"
             ><span
