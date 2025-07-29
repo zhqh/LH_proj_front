@@ -318,7 +318,7 @@
 
   const baseStrategyParam = reactive({
     param: {
-      mode: 'simulated',
+      mode: 'formal',
       type: 'steady',
       name: 'ReboundTrade',
       instId: '',
